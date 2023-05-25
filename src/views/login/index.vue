@@ -48,18 +48,10 @@ const onLogin = async (formEl: FormInstance | undefined) => {
         password: ruleForm.password
       });
       if (!loginRes) return;
-      router.push({ name: "Welcome" });
-      // useUserStoreHook()
-      //   .loginByUsername({ username: ruleForm.username, password: "admin123" })
-      //   .then(res => {
-      //     if (res.success) {
-      //       // 获取后端路由
-      //       initRouter().then(() => {
-      //         router.push(getTopMenu(true).path);
-      //         message("登录成功", { type: "success" });
-      //       });
-      //     }
-      //   });
+      initRouter().then(() => {
+        router.push(getTopMenu(true).path);
+        message("登入成功", { type: "success" });
+      });
     } else {
       loading.value = false;
       return fields;

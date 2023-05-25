@@ -66,6 +66,8 @@ export const useUserStore = defineStore({
         expires: data.expires
       };
       await setTokenDirectus(token);
+
+      // 取得token後再拿userinfo
       const userInfo = await this.getMe();
       await setUserInfo({
         username: userInfo.first_name,

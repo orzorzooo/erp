@@ -67,6 +67,11 @@ export function setToken(data: DataInfo<Date>) {
   }
 }
 
+/**
+ * @description directus的登入為先取得token資訊再取得user資訊，所以這邊分兩次
+ */
+
+// 先設定token
 export async function setTokenDirectus(data) {
   console.log("set token directus", data);
   let expires = 0;
@@ -84,6 +89,7 @@ export async function setTokenDirectus(data) {
   });
 }
 
+// 有token才拿userinfo
 export async function setUserInfo(data) {
   function setSessionKey(username: string, roles: Array<string>) {
     useUserStoreHook().SET_USERNAME(username);
