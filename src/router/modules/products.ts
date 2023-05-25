@@ -11,6 +11,14 @@ export default {
       meta: {
         title: "商品"
       }
+    },
+    {
+      path: "/products/edit",
+      name: "EditProduct",
+      component: () => import("@/views/products/edit.vue"),
+      meta: {
+        title: "新增"
+      }
     }
   ]
 };
