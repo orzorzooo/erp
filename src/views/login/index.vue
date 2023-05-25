@@ -34,25 +34,32 @@ const { title } = useNav();
 
 const ruleForm = reactive({
   username: "admin",
-  password: "admin123"
+  password: "admin123",
+  email: "erp@orzorzooo.com"
 });
 
 const onLogin = async (formEl: FormInstance | undefined) => {
   loading.value = true;
   if (!formEl) return;
-  await formEl.validate((valid, fields) => {
+  await formEl.validate(async (valid, fields) => {
     if (valid) {
-      useUserStoreHook()
-        .loginByUsername({ username: ruleForm.username, password: "admin123" })
-        .then(res => {
-          if (res.success) {
-            // 获取后端路由
-            initRouter().then(() => {
-              router.push(getTopMenu(true).path);
-              message("登录成功", { type: "success" });
-            });
-          }
-        });
+      const loginRes = await useUserStoreHook().loginByEmail({
+        email: ruleForm.email,
+        password: ruleForm.password
+      });
+      if (!loginRes) return;
+      router.push({ name: "Welcome" });
+      // useUserStoreHook()
+      //   .loginByUsername({ username: ruleForm.username, password: "admin123" })
+      //   .then(res => {
+      //     if (res.success) {
+      //       // 获取后端路由
+      //       initRouter().then(() => {
+      //         router.push(getTopMenu(true).path);
+      //         message("登录成功", { type: "success" });
+      //       });
+      //     }
+      //   });
     } else {
       loading.value = false;
       return fields;
@@ -106,7 +113,7 @@ onBeforeUnmount(() => {
             :rules="loginRules"
             size="large"
           >
-            <Motion :delay="100">
+            <!-- <Motion :delay="100">
               <el-form-item
                 :rules="[
                   {
@@ -121,6 +128,26 @@ onBeforeUnmount(() => {
                   clearable
                   v-model="ruleForm.username"
                   placeholder="账号"
+                  :prefix-icon="useRenderIcon(User)"
+                />
+              </el-form-item>
+            </Motion> -->
+
+            <Motion :delay="100">
+              <el-form-item
+                :rules="[
+                  {
+                    required: true,
+                    message: '請輸入email',
+                    trigger: 'blur'
+                  }
+                ]"
+                prop="email"
+              >
+                <el-input
+                  clearable
+                  v-model="ruleForm.email"
+                  placeholder="Email"
                   :prefix-icon="useRenderIcon(User)"
                 />
               </el-form-item>

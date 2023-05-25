@@ -67,6 +67,45 @@ export function setToken(data: DataInfo<Date>) {
   }
 }
 
+export async function setTokenDirectus(data) {
+  console.log("set token directus", data);
+  let expires = 0;
+  expires = new Date().getTime() + data.expires; //for directus
+  const { accessToken, refreshToken } = data;
+  const cookieString = JSON.stringify({ accessToken, expires });
+  expires > 0
+    ? Cookies.set(TokenKey, cookieString, {
+        expires: (expires - Date.now()) / 86400000
+      })
+    : Cookies.set(TokenKey, cookieString);
+  storageSession().setItem(sessionKey, {
+    refreshToken,
+    expires
+  });
+}
+
+export async function setUserInfo(data) {
+  function setSessionKey(username: string, roles: Array<string>) {
+    useUserStoreHook().SET_USERNAME(username);
+    useUserStoreHook().SET_ROLES(roles);
+    storageSession().setItem(sessionKey, {
+      username,
+      roles
+    });
+  }
+
+  if (data.username && data.roles) {
+    const { username, roles } = data;
+    setSessionKey(username, roles);
+  } else {
+    const username =
+      storageSession().getItem<DataInfo<number>>(sessionKey)?.username ?? "";
+    const roles =
+      storageSession().getItem<DataInfo<number>>(sessionKey)?.roles ?? [];
+    setSessionKey(username, roles);
+  }
+}
+
 /** 删除`token`以及key值为`user-info`的session信息 */
 export function removeToken() {
   Cookies.remove(TokenKey);
