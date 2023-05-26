@@ -21,6 +21,7 @@ import User from "@iconify-icons/ri/user-3-fill";
 defineOptions({
   name: "Login"
 });
+
 const router = useRouter();
 const loading = ref(false);
 const ruleFormRef = ref<FormInstance>();
@@ -105,26 +106,6 @@ onBeforeUnmount(() => {
             :rules="loginRules"
             size="large"
           >
-            <!-- <Motion :delay="100">
-              <el-form-item
-                :rules="[
-                  {
-                    required: true,
-                    message: '请输入账号',
-                    trigger: 'blur'
-                  }
-                ]"
-                prop="username"
-              >
-                <el-input
-                  clearable
-                  v-model="ruleForm.username"
-                  placeholder="账号"
-                  :prefix-icon="useRenderIcon(User)"
-                />
-              </el-form-item>
-            </Motion> -->
-
             <Motion :delay="100">
               <el-form-item
                 :rules="[
