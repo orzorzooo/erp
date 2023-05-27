@@ -4,7 +4,7 @@ import { userType } from "./types";
 import { routerArrays } from "@/layout/types";
 import { router, resetRouter } from "@/router";
 import { storageSession } from "@pureadmin/utils";
-import { getLogin, refreshTokenApi } from "@/api/user";
+import { getLogin, refreshTokenApi_directus } from "@/api/user";
 import { UserResult, RefreshTokenResult } from "@/api/user";
 import { useMultiTagsStoreHook } from "@/store/modules/multiTags";
 import {
@@ -99,11 +99,13 @@ export const useUserStore = defineStore({
     },
     /** 刷新`token` */
     async handRefreshToken(data) {
+      console.log("refresh token");
       return new Promise<RefreshTokenResult>((resolve, reject) => {
-        refreshTokenApi(data)
+        refreshTokenApi_directus(data)
           .then(data => {
+            console.log(data);
             if (data) {
-              setToken(data.data);
+              setTokenDirectus(data.data);
               resolve(data);
             }
           })
