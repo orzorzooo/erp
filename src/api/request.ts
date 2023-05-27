@@ -1,8 +1,8 @@
 import { http } from "@/utils/http";
 import { getToken, formatToken } from "@/utils/auth";
 import { useUserStoreHook } from "@/store/modules/user";
+import { message } from "@/utils/message";
 export const { VITE_API_URL } = import.meta.env;
-
 export const get: any = async ({
   type = "items",
   collection = "",
@@ -113,6 +113,13 @@ function onError(error) {
     "font-weight:bold;border:1px solid white;padding:0.3rem 1rem;background-color:red;border-radius:1rem"
   );
   console.log(error.response.data.errors[0].message);
+  if (error.response.status == 401) {
+    const token = getToken();
+    console.log(token);
+    if (!token) return;
+    useUserStoreHook().logOut();
+    message("工作階段已過期", { type: "success" });
+  }
 }
 
 function handleErrorMsg(status) {

@@ -6,6 +6,15 @@
           <p>{{ row.description }}</p>
         </div>
         <div class="p-4">
+          <div class="flex mb-4">
+            <el-image
+              v-for="(item, index) of row.files"
+              style="width: 100px; height: 100px"
+              :src="assets(item.directus_files_id)"
+              fit="cover"
+            />
+            <!-- <img :src="assets(item.directus_files_id)" alt="" /> -->
+          </div>
           <el-button type="primary" @click="edit(row.id)">編輯商品</el-button>
         </div>
       </template>
@@ -13,7 +22,7 @@
   </div>
 </template>
 <script setup>
-import { get } from "@/api/request";
+import { get, assets } from "@/api/request";
 import { ref } from "vue";
 import { PureTable } from "@pureadmin/table";
 import { useRouter } from "vue-router";
